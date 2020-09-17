@@ -1,4 +1,5 @@
 from tkinter import *
+from hangman import *
 
 class game:
 
@@ -14,6 +15,7 @@ class game:
         self.windowMain()
         
     def windowMain(self):
+        self.objectHangman = hangman(0)
 
         self.window = Tk()
         self.window.title('Hangman Game')
@@ -30,39 +32,39 @@ class game:
         bannerWord = Label(text='', width=70, height=5, bg=self.colorTheme)
         bannerWord.place(x=350, y=120)
 
-        lblWord = Label(text='ABCD EFGH IJLM NOPQ RSTU VXWY', font='Courier 20 bold', bg=self.colorTheme, fg='DarkGreen')
-        lblWord.place(x=360, y=140)
+        self.lblWord = Label(text='ABCD EFGH IJLM NOPQ RSTU VXWY', font='Courier 20 bold', bg=self.colorTheme, fg='DarkGreen')
+        self.lblWord.place(x=360, y=140)
 
         #TECLADO
         bannerKeyBoard = Label(text='', width=70, height=15, bg=self.banner)
         bannerKeyBoard.place(x=350, y=240)
 
-        self.a = Button(text='A', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.b = Button(text='B', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.c = Button(text='C', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.d = Button(text='D', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.e = Button(text='E', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.f = Button(text='F', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.g = Button(text='G', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.h = Button(text='H', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.i = Button(text='I', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.j = Button(text='J', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.k = Button(text='K', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.l = Button(text='L', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.m = Button(text='M', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.n = Button(text='N', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.o = Button(text='O', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.p = Button(text='P', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.q = Button(text='Q', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.r = Button(text='R', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.s = Button(text='S', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.t = Button(text='T', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.u = Button(text='U', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.v = Button(text='V', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.x = Button(text='X', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.w = Button(text='W', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.y = Button(text='Y', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.z = Button(text='Z', command='', width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.a = Button(text='A', command=lambda: self.replaceWord('A', 0), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.b = Button(text='B', command=lambda: self.replaceWord('B', 1), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.c = Button(text='C', command=lambda: self.replaceWord('C', 2), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.d = Button(text='D', command=lambda: self.replaceWord('D', 3), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.e = Button(text='E', command=lambda: self.replaceWord('E', 4), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.f = Button(text='F', command=lambda: self.replaceWord('F', 5), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.g = Button(text='G', command=lambda: self.replaceWord('G', 6), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.h = Button(text='H', command=lambda: self.replaceWord('H', 7), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.i = Button(text='I', command=lambda: self.replaceWord('I', 8), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.j = Button(text='J', command=lambda: self.replaceWord('J', 9), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.k = Button(text='K', command=lambda: self.replaceWord('K', 10), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.l = Button(text='L', command=lambda: self.replaceWord('L', 11), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.m = Button(text='M', command=lambda: self.replaceWord('M', 12), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.n = Button(text='N', command=lambda: self.replaceWord('N', 13), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.o = Button(text='O', command=lambda: self.replaceWord('O', 14), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.p = Button(text='P', command=lambda: self.replaceWord('P', 15), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.q = Button(text='Q', command=lambda: self.replaceWord('Q', 16), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.r = Button(text='R', command=lambda: self.replaceWord('R', 17), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.s = Button(text='S', command=lambda: self.replaceWord('S', 18), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.t = Button(text='T', command=lambda: self.replaceWord('T', 19), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.u = Button(text='U', command=lambda: self.replaceWord('U', 20), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.v = Button(text='V', command=lambda: self.replaceWord('V', 21), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.x = Button(text='X', command=lambda: self.replaceWord('X', 22), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.w = Button(text='W', command=lambda: self.replaceWord('W', 23), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.y = Button(text='Y', command=lambda: self.replaceWord('Y', 24), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.z = Button(text='Z', command=lambda: self.replaceWord('Z', 25), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
 
         #ADICIONAR TECLAS NA LISTA
         self.listKeyBoard = [   self.a, self.b, self.c, self.d, self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, 
@@ -95,11 +97,80 @@ class game:
         lblClue.place(x=40, y=130)
 
         #BONECO
-
-        self.had = Label(text=' (-_-)', bg=self.banner, font='ARIAL 30')
-        self.had.place(x=120, y=180)
+        self.surffleWords()
 
         self.window.mainloop()
+
+    def surffleWords(self):
+        
+        #PEGAR A PALAVRA SORTEADA
+        self.word = self.objectHangman.getWord()[0]
+        print(self.word)
+        if self.word != 'END':
+
+            #TROCAR LETRAS POR TRAÇOS
+            self.replaceLetTrace()
+
+    def replaceLetTrace(self):
+
+        traceWord = ''
+
+        #VARRER A PALAVRA E TROCA LETRAS POR TRAÇOS
+        for i in self.word:
+
+            if i == ' ':
+                traceWord += ' '
+
+            else:
+                traceWord += '-'
+
+        #EXIBIR NO CAMPO PALAVRA
+        self.lblWord['text'] = traceWord
+
+    def replaceWord(self, let, posLet):
+        
+        #VERIFICA SE A LETRA EXISTA NA PALAVRA
+        if let in self.word:
+            
+            letPositions = []
+
+            #VARRER AS POSICOES QUE A LETRA ESTÁ
+            for pos,i in enumerate(self.word):
+            
+                #ADICIONA AS POSICOES CUJA A LETRA SEJA IGUAL
+                if i == let:
+                    letPositions.append(pos)
+
+            #SUBSTITUIR
+            self.showNewWord(let, letPositions)
+
+            #VERIFICA SE O USUARIO ACERTOU A PALAVRA
+            self.verifyWord()
+
+            #DELETA A LETRA DO TECLADO
+            self.deleteKey(posLet)
+
+        else:
+            print('SORRY :(')
+
+    def showNewWord(self, let, letPositions):
+
+        currentWord = list(self.lblWord['text'])
+
+        #SUBSTITUI A O TRAÇO PELA LETRA CORRESPONDENTE
+        for i in letPositions:
+            currentWord[i] = let
+
+        self.lblWord['text'] = ''.join(currentWord)
+
+    def verifyWord(self):
+
+        if self.word == self.lblWord['text']:
+            print('VERY GOOD !')
+
+    def deleteKey(self, posLet):
+        #DESTRUIR BOTAO APERTADO
+        self.listKeyBoard[posLet].destroy()
 
 game()
 
