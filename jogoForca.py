@@ -13,16 +13,20 @@ class game:
         self.banner = 'SeaGreen'
         self.fontDefault = 'Courier 15 bold'
 
-        self.listKeyBoard = []
-
         self.dictThemes = {0:'AGRICULTURE', 1:'AGRIBUSINESS', 2:'COMPUTING', 3:'SOFTWARE ENGINEERING', 4:'MUSIC'}
         self.pharsesUp = ['Good for you!', 'Very Good!', 'Are you Cheating?']
+        
+        #INICIAR O JOGO
+        self.startGame()
+
+    def startGame(self):
+        self.listKeyBoard = []
         
         #OBEJETO DE JOGO
         self.objectHangman = hangman(0)
 
         #PONTOS POR LETRAS CORRETAS
-        self.points = 0
+        self.points = 20
 
         self.windowMain(0)
         
@@ -110,8 +114,8 @@ class game:
         lblClue = Label(text='CLUE: {}'.format(self.dictThemes[theme]), font=self.fontDefault, bg=self.banner, fg='white')
         lblClue.place(x=40, y=130)
 
-        lblPoints = Label(text='POINTS: {}'.format(self.points), font='Courier 35 bold', fg='orange', bg=self.banner, width=10)
-        lblPoints.place(x=40, y=480)
+        self.lblPoints = Label(text='POINTS: {}'.format(self.points), font='Courier 35 bold', fg='orange', bg=self.banner, width=50)
+        self.lblPoints.place(x=0, y=490)
 
         #BONECO
         self.surffleWords()
@@ -131,8 +135,9 @@ class game:
             lblFinishGame = Label(text='  YOU ARE THE BEST 😱  ', font='Courier 50 bold', bg='red', fg='white', height=8, )
             lblFinishGame.place(x=0, y=0)
 
-            #sleep(5)
-            #self.window.destroy()
+            #BOTAO RESTART
+            self.btRestart = Button(text='RESTART GAME', font='Courier 12 bold', bg='red', fg='white', command=self.restartGame)
+            self.btRestart.place(x=360, y=350)
 
         else:
             #TROCAR LETRAS POR TRAÇOS
@@ -154,6 +159,7 @@ class game:
         #EXIBIR NO CAMPO PALAVRA
         self.lblWord['text'] = traceWord
 
+    #VERIFICA SE O USUARIO ACERTOU OU ERROU
     def replaceWord(self, let, posLet):
         
         #VERIFICA SE A LETRA EXISTA NA PALAVRA
@@ -186,6 +192,9 @@ class game:
 
             #CRIAR NOVA PARTE DO BONECO
             self.setDoll()
+
+        #ATUALIZAR PONTOS
+        self.refreshPoints()
 
         #DELETA A LETRA DO TECLADO
         self.deleteKey(posLet)
@@ -220,9 +229,18 @@ class game:
         except:
             pass
 
+    def refreshPoints(self):
+        #ATUALIZA OS PONTOS
+        self.lblPoints['text'] = 'POINTS: {}'.format(self.points)
+
+
     def setDoll(self):
 
-        if self.erros == 1:
+        if self.points == 0:
+            #O USUARIO ERROU DEMAIS
+            self.youLose()
+
+        elif self.erros == 1:
             lblHead = Label(text='', fg='white', bg='black', width=4, height=2, font='Arial 12 bold')
             lblHead.place(x=140, y=180)
 
@@ -246,9 +264,25 @@ class game:
             lblLeftLeg = Label(text='', fg='white', bg='black', width=2, height=5, font='Arial 12 bold')
             lblLeftLeg.place(x=160, y=340)
 
-            #FIM DE JOGO - VOCÊ PERDEU
-            lblFinishGame = Label(text='    YOU LOSE !!! 😭    ', font='Courier 50 bold', bg='blue', fg='white', height=8, )
-            lblFinishGame.place(x=0, y=0)
+            #O USUARIO COMPLETOU O BONECO
+            self.youLose()
+
+    def youLose(self):
+        #FIM DE JOGO - VOCÊ PERDEU
+        lblFinishGame = Label(text='    YOU LOSE !!! 😭    ', font='Courier 50 bold', bg='blue', fg='white', height=8, )
+        lblFinishGame.place(x=0, y=0)
+        
+        #BOTAO RESTART
+        self.btRestart = Button(text='RESTART GAME', font='Courier 12 bold', bg='blue', fg='white', command=self.restartGame)
+        self.btRestart.place(x=360, y=350)
+
+    #REINICIAR O JOGO
+    def restartGame(self):
+        #DESTRUIR A WINDOW
+        self.window.destroy()
+
+        #REINICIAR O JOGO
+        self.startGame()
 
 game()
 
