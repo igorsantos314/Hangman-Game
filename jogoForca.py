@@ -1,5 +1,8 @@
 from tkinter import *
+from tkinter import messagebox
 from hangman import *
+from random import choice
+from time import sleep
 
 class game:
 
@@ -12,17 +15,28 @@ class game:
 
         self.listKeyBoard = []
 
-        self.windowMain()
+        self.dictThemes = {0:'AGRICULTURE', 1:'AGRIBUSINESS', 2:'COMPUTING', 3:'SOFTWARE ENGINEERING', 4:'MUSIC'}
+        self.pharsesUp = ['Good for you!', 'Very Good!', 'Are you Cheating?']
         
-    def windowMain(self):
+        #OBEJETO DE JOGO
         self.objectHangman = hangman(0)
+
+        #PONTOS POR LETRAS CORRETAS
+        self.points = 0
+
+        self.windowMain(0)
+        
+    def windowMain(self, theme):
 
         self.window = Tk()
         self.window.title('Hangman Game')
-        self.window.geometry('900x500')
+        self.window.geometry('900x550+150+10')
         self.window.resizable(False, False)
 
         self.window['bg'] = self.titleColor
+
+        #SABER QUAL PARTE DO BONECO DEVE SER EXIBIDA
+        self.erros = 0
 
         #TITULO DO JOGO
         lblTitle = Label(text='HANGMAN GAME', bg=self.banner, font='Courier 35 bold', fg='white', width=70)
@@ -32,7 +46,7 @@ class game:
         bannerWord = Label(text='', width=70, height=5, bg=self.colorTheme)
         bannerWord.place(x=350, y=120)
 
-        self.lblWord = Label(text='ABCD EFGH IJLM NOPQ RSTU VXWY', font='Courier 20 bold', bg=self.colorTheme, fg='DarkGreen')
+        self.lblWord = Label(text='', font='Courier 20 bold', bg=self.colorTheme, fg='DarkGreen')
         self.lblWord.place(x=360, y=140)
 
         #TECLADO
@@ -93,11 +107,16 @@ class game:
         bannerDoll.place(x=30, y=120)
 
         #DICA
-        lblClue = Label(text='CLUE: ALPHABET', font=self.fontDefault, bg=self.banner, fg='white')
+        lblClue = Label(text='CLUE: {}'.format(self.dictThemes[theme]), font=self.fontDefault, bg=self.banner, fg='white')
         lblClue.place(x=40, y=130)
+
+        lblPoints = Label(text='POINTS: {}'.format(self.points), font='Courier 35 bold', fg='orange', bg=self.banner, width=10)
+        lblPoints.place(x=40, y=480)
 
         #BONECO
         self.surffleWords()
+
+        self.setDoll()
 
         self.window.mainloop()
 
@@ -105,9 +124,17 @@ class game:
         
         #PEGAR A PALAVRA SORTEADA
         self.word = self.objectHangman.getWord()[0]
-        print(self.word)
-        if self.word != 'END':
+        #print(self.word)
 
+        if self.word == 'E':
+            #MENSSAGEM DE FIM DE JOGO
+            lblFinishGame = Label(text='  YOU ARE THE BEST 😱  ', font='Courier 50 bold', bg='red', fg='white', height=8, )
+            lblFinishGame.place(x=0, y=0)
+
+            #sleep(5)
+            #self.window.destroy()
+
+        else:
             #TROCAR LETRAS POR TRAÇOS
             self.replaceLetTrace()
 
@@ -147,11 +174,21 @@ class game:
             #VERIFICA SE O USUARIO ACERTOU A PALAVRA
             self.verifyWord()
 
-            #DELETA A LETRA DO TECLADO
-            self.deleteKey(posLet)
+            #ADICIONA 5 PONTOS
+            self.points += 5
 
         else:
-            print('SORRY :(')
+            #DIMINUIR NA PONTUAÇÃO
+            self.points -= 2
+
+            #SOMAR UM ERRO
+            self.erros += 1
+
+            #CRIAR NOVA PARTE DO BONECO
+            self.setDoll()
+
+        #DELETA A LETRA DO TECLADO
+        self.deleteKey(posLet)
 
     def showNewWord(self, let, letPositions):
 
@@ -166,13 +203,52 @@ class game:
     def verifyWord(self):
 
         if self.word == self.lblWord['text']:
-            print('VERY GOOD !')
+            #SORTIA UM FRASE DE PARABENS
+            messagebox.showinfo('',choice(self.pharsesUp))
+
+            #DESTROI A JANELA E INICIA COM OUTRA
+            self.window.destroy()
+
+            #ABRE A JANELA COM OUTRA PALAVRA
+            self.windowMain(0)
 
     def deleteKey(self, posLet):
-        #DESTRUIR BOTAO APERTADO
-        self.listKeyBoard[posLet].destroy()
+        try:
+            #DESTRUIR BOTAO APERTADO
+            self.listKeyBoard[posLet].destroy()
+
+        except:
+            pass
+
+    def setDoll(self):
+
+        if self.erros == 1:
+            lblHead = Label(text='', fg='white', bg='black', width=4, height=2, font='Arial 12 bold')
+            lblHead.place(x=140, y=180)
+
+        elif self.erros == 2:
+            lblBody = Label(text='', fg='white', bg='black', width=4, height=5, font='Arial 12 bold')
+            lblBody.place(x=140, y=235)
+
+        elif self.erros == 3:
+            lblLeftArm = Label(text='', fg='white', bg='black', width=2, height=5, font='Arial 12 bold')
+            lblLeftArm.place(x=110, y=235)
+
+        elif self.erros == 4:
+            lblRightArm = Label(text='', fg='white', bg='black', width=2, height=5, font='Arial 12 bold')
+            lblRightArm.place(x=190, y=235)
+
+        elif self.erros == 5:
+            lblRightLeg = Label(text='', fg='white', bg='black', width=2, height=5, font='Arial 12 bold')
+            lblRightLeg.place(x=140, y=340)
+
+        elif self.erros == 6:
+            lblLeftLeg = Label(text='', fg='white', bg='black', width=2, height=5, font='Arial 12 bold')
+            lblLeftLeg.place(x=160, y=340)
+
+            #FIM DE JOGO - VOCÊ PERDEU
+            lblFinishGame = Label(text='    YOU LOSE !!! 😭    ', font='Courier 50 bold', bg='blue', fg='white', height=8, )
+            lblFinishGame.place(x=0, y=0)
 
 game()
-
-
 

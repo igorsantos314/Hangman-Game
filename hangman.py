@@ -34,7 +34,7 @@ class hangman:
             #RETORNA O PRIMEIRO ITEM
             return word
         
-        return 'END'
+        return 'E'
 
     def verifyEndGame(self):
         #VERIFICA SE A LISTA DE PALAVRAS ACABOU

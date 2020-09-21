@@ -130,5 +130,6 @@ class bd:
         return listWords
 
 b = bd()
-for i in ['Alligator', 'Anteater', 'Armadillo', 'Bat', 'Bear', 'Butterfly', 'Camel']:
-    b.registerWordAgroPecuaria(i.upper())
+"""for i in ['Alligator', 'Anteater', 'Armadillo', 'Bat', 'Bear', 'Butterfly', 'Camel']:
+    b.registerWordAgroPecuaria(i.upper())"""
+#b.registerWordAgroPecuaria('Bear'.upper())
