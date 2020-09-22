@@ -19,6 +19,18 @@ class hangman:
         if t == 0:
             self.listWords = self.sampleListWords(self.objectBD.getWordsAgroPecuaria())
 
+        elif t == 1:
+            self.listWords = self.sampleListWords(self.objectBD.getWordsAgroIndustria())
+
+        elif t == 2:
+            self.listWords = self.sampleListWords(self.objectBD.getWordsEngSoftware())
+
+        elif t == 3:
+            self.listWords = self.sampleListWords(self.objectBD.getWordsInformatica())
+
+        elif t == 4:
+            self.listWords = self.sampleListWords(self.objectBD.getWordsMusica())
+
     def sampleListWords(self, l):
         #RANDOMIZA A LISTA DE PALAVRAS
         return sample(l, len(l))

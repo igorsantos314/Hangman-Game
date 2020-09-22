@@ -3,6 +3,7 @@ from tkinter import messagebox
 from hangman import *
 from random import choice
 from time import sleep
+import winsound, _thread as th
 
 class game:
 
@@ -11,26 +12,68 @@ class game:
         self.colorTheme = 'White'
         self.titleColor = 'DarkGreen'
         self.banner = 'SeaGreen'
-        self.fontDefault = 'Courier 15 bold'
+        self.fontCourier = 'Courier 15 bold'
 
         self.dictThemes = {0:'AGRICULTURE', 1:'AGRIBUSINESS', 2:'COMPUTING', 3:'SOFTWARE ENGINEERING', 4:'MUSIC'}
         self.pharsesUp = ['Good for you!', 'Very Good!', 'Are you Cheating?']
         
+        self.themeChoosed = 0
+
         #INICIAR O JOGO
-        self.startGame()
+        self.chooseTheme()
+
+    def chooseTheme(self):
+
+        windowTheme = Tk()
+        windowTheme.resizable(False, False)
+        windowTheme.title('THEMES')
+        windowTheme['bg'] = self.banner
+
+        #FUNCAO PARA DESTRUIR ESCOLHER TEMA E INICIAR O JOGO
+        def start(theme):
+            #DESTROI A JANELA
+            windowTheme.destroy()
+
+            #DEFINIR O TEMA
+            self.themeChoosed = theme
+
+            #INICIA O JOGO COM O TEMA ESPECIFICO
+            self.startGame()
+            
+
+        lblThemes = Label(text='CHOOSE THE THEME', font=self.fontCourier, bg=self.banner, fg='white')
+        lblThemes.pack()
+
+        btAgriculture = Button(text='AGRICULTURE', font=self.fontCourier, bg=self.titleColor, fg='white', width=20, height=2, command=lambda:start(0))
+        btAgriculture.pack(pady=5)
+
+        btAgroBusiness = Button(text='AGROBUSINESS', font=self.fontCourier, bg=self.titleColor, fg='white', width=20, height=2, command=lambda:start(1))
+        btAgroBusiness.pack(pady=5)
+
+        btEngSoftware = Button(text='SOFTWARE ENGINEERING', font=self.fontCourier, bg=self.titleColor, fg='white', width=20, height=2, command=lambda:start(2))
+        btEngSoftware.pack(pady=5)
+
+        btInformatica = Button(text='COMPUTING', font=self.fontCourier, bg=self.titleColor, fg='white', width=20, height=2, command=lambda:start(3))
+        btInformatica.pack(pady=5)
+
+        btMusica = Button(text='MUSIC', font=self.fontCourier, bg=self.titleColor, fg='white', width=20, height=2, command=lambda:start(4))
+        btMusica.pack(pady=5)
+
+
+        windowTheme.mainloop()
 
     def startGame(self):
         self.listKeyBoard = []
         
         #OBEJETO DE JOGO
-        self.objectHangman = hangman(0)
+        self.objectHangman = hangman(self.themeChoosed)
 
         #PONTOS POR LETRAS CORRETAS
         self.points = 20
 
-        self.windowMain(0)
+        self.windowMain()
         
-    def windowMain(self, theme):
+    def windowMain(self):
 
         self.window = Tk()
         self.window.title('Hangman Game')
@@ -57,32 +100,32 @@ class game:
         bannerKeyBoard = Label(text='', width=70, height=15, bg=self.banner)
         bannerKeyBoard.place(x=350, y=240)
 
-        self.a = Button(text='A', command=lambda: self.replaceWord('A', 0), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.b = Button(text='B', command=lambda: self.replaceWord('B', 1), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.c = Button(text='C', command=lambda: self.replaceWord('C', 2), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.d = Button(text='D', command=lambda: self.replaceWord('D', 3), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.e = Button(text='E', command=lambda: self.replaceWord('E', 4), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.f = Button(text='F', command=lambda: self.replaceWord('F', 5), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.g = Button(text='G', command=lambda: self.replaceWord('G', 6), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.h = Button(text='H', command=lambda: self.replaceWord('H', 7), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.i = Button(text='I', command=lambda: self.replaceWord('I', 8), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.j = Button(text='J', command=lambda: self.replaceWord('J', 9), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.k = Button(text='K', command=lambda: self.replaceWord('K', 10), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.l = Button(text='L', command=lambda: self.replaceWord('L', 11), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.m = Button(text='M', command=lambda: self.replaceWord('M', 12), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.n = Button(text='N', command=lambda: self.replaceWord('N', 13), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.o = Button(text='O', command=lambda: self.replaceWord('O', 14), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.p = Button(text='P', command=lambda: self.replaceWord('P', 15), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.q = Button(text='Q', command=lambda: self.replaceWord('Q', 16), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.r = Button(text='R', command=lambda: self.replaceWord('R', 17), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.s = Button(text='S', command=lambda: self.replaceWord('S', 18), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.t = Button(text='T', command=lambda: self.replaceWord('T', 19), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.u = Button(text='U', command=lambda: self.replaceWord('U', 20), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.v = Button(text='V', command=lambda: self.replaceWord('V', 21), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.x = Button(text='X', command=lambda: self.replaceWord('X', 22), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.w = Button(text='W', command=lambda: self.replaceWord('W', 23), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.y = Button(text='Y', command=lambda: self.replaceWord('Y', 24), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
-        self.z = Button(text='Z', command=lambda: self.replaceWord('Z', 25), width=2, height=1, font=self.fontDefault, bg= self.titleColor, fg='white')
+        self.a = Button(text='A', command=lambda: self.replaceWord('A', 0), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.b = Button(text='B', command=lambda: self.replaceWord('B', 1), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.c = Button(text='C', command=lambda: self.replaceWord('C', 2), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.d = Button(text='D', command=lambda: self.replaceWord('D', 3), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.e = Button(text='E', command=lambda: self.replaceWord('E', 4), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.f = Button(text='F', command=lambda: self.replaceWord('F', 5), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.g = Button(text='G', command=lambda: self.replaceWord('G', 6), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.h = Button(text='H', command=lambda: self.replaceWord('H', 7), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.i = Button(text='I', command=lambda: self.replaceWord('I', 8), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.j = Button(text='J', command=lambda: self.replaceWord('J', 9), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.k = Button(text='K', command=lambda: self.replaceWord('K', 10), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.l = Button(text='L', command=lambda: self.replaceWord('L', 11), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.m = Button(text='M', command=lambda: self.replaceWord('M', 12), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.n = Button(text='N', command=lambda: self.replaceWord('N', 13), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.o = Button(text='O', command=lambda: self.replaceWord('O', 14), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.p = Button(text='P', command=lambda: self.replaceWord('P', 15), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.q = Button(text='Q', command=lambda: self.replaceWord('Q', 16), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.r = Button(text='R', command=lambda: self.replaceWord('R', 17), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.s = Button(text='S', command=lambda: self.replaceWord('S', 18), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.t = Button(text='T', command=lambda: self.replaceWord('T', 19), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.u = Button(text='U', command=lambda: self.replaceWord('U', 20), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.v = Button(text='V', command=lambda: self.replaceWord('V', 21), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.x = Button(text='X', command=lambda: self.replaceWord('X', 22), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.w = Button(text='W', command=lambda: self.replaceWord('W', 23), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.y = Button(text='Y', command=lambda: self.replaceWord('Y', 24), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
+        self.z = Button(text='Z', command=lambda: self.replaceWord('Z', 25), width=2, height=1, font=self.fontCourier, bg= self.titleColor, fg='white')
 
         #ADICIONAR TECLAS NA LISTA
         self.listKeyBoard = [   self.a, self.b, self.c, self.d, self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, 
@@ -111,24 +154,23 @@ class game:
         bannerDoll.place(x=30, y=120)
 
         #DICA
-        lblClue = Label(text='CLUE: {}'.format(self.dictThemes[theme]), font=self.fontDefault, bg=self.banner, fg='white')
+        lblClue = Label(text='CLUE: {}'.format(self.dictThemes[self.themeChoosed]), font=self.fontCourier, bg=self.banner, fg='white')
         lblClue.place(x=40, y=130)
 
         self.lblPoints = Label(text='POINTS: {}'.format(self.points), font='Courier 35 bold', fg='orange', bg=self.banner, width=50)
         self.lblPoints.place(x=0, y=490)
 
-        #BONECO
         self.surffleWords()
 
+        #BONECO
         self.setDoll()
 
         self.window.mainloop()
 
     def surffleWords(self):
-        
+
         #PEGAR A PALAVRA SORTEADA
         self.word = self.objectHangman.getWord()[0]
-        #print(self.word)
 
         if self.word == 'E':
             #MENSSAGEM DE FIM DE JOGO
@@ -193,11 +235,18 @@ class game:
             #CRIAR NOVA PARTE DO BONECO
             self.setDoll()
 
+            #SOM DE ERROR
+            th.start_new_thread(self.soundError, ())
+
         #ATUALIZAR PONTOS
         self.refreshPoints()
 
         #DELETA A LETRA DO TECLADO
         self.deleteKey(posLet)
+
+    def soundError(self):
+        b = winsound.Beep
+        b(420,200)
 
     def showNewWord(self, let, letPositions):
 
@@ -219,7 +268,7 @@ class game:
             self.window.destroy()
 
             #ABRE A JANELA COM OUTRA PALAVRA
-            self.windowMain(0)
+            self.windowMain()
 
     def deleteKey(self, posLet):
         try:
@@ -230,8 +279,13 @@ class game:
             pass
 
     def refreshPoints(self):
-        #ATUALIZA OS PONTOS
-        self.lblPoints['text'] = 'POINTS: {}'.format(self.points)
+        #TRATA ERRO DE ATUALIZAR PONTOS, APÓS A JANELA FECHAR
+        try:
+            #ATUALIZA OS PONTOS
+            self.lblPoints['text'] = 'POINTS: {}'.format(self.points)
+
+        except TclError:
+            pass
 
 
     def setDoll(self):
